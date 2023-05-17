@@ -77,14 +77,14 @@ class SliderGame {
   
   /// Moves to the current space the piece with offset `delta` from the space.
   /// Does nothing if `canMove(delta)` is true.
-  void move(Coord delta) {
+  void move(Coord delta, {bool ignoreMoveCount = false}) {
     if (!canMove(delta)) { return; }
-    else { _playerMoveCount++; }
     final Coord newSpace = _space + delta;
     final tmp = _board[newSpace.row][newSpace.col];
     _board[newSpace.row][newSpace.col] = _board[_space.row][_space.col];
     _board[_space.row][_space.col] = tmp;
     _space = newSpace;
+    if (!ignoreMoveCount) { _playerMoveCount++; }
   }
 
   /// Makes one or more random moves on the board.
@@ -95,7 +95,7 @@ class SliderGame {
       while (!canMove(validMoves[choice])) {
         choice = rand.nextInt(validMoves.length);
       }
-      move(validMoves[choice]);
+      move(validMoves[choice], ignoreMoveCount: true);
     }
   }
 }
