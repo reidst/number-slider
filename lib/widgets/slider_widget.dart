@@ -91,14 +91,30 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
               ),
             ),
             Expanded(
-              child: FittedBox(
-                fit: BoxFit.cover,
-                child: Text(
-                  isSolved ? "You Win!" : " ",
-                  style: TextStyle(
-                    color: Theme.of(context).indicatorColor,
+              child: Row( // used to be inside FittedBox(cover)
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      alignment: Alignment.centerLeft,
+                      child: Text("Moves: ${_game.playerMoveCount}"),
+                    ),
                   ),
-                ),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      alignment:Alignment.centerRight,
+                      child: Text(
+                        isSolved ? "You Win!" : " ",
+                        style: TextStyle(
+                          color: Theme.of(context).indicatorColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
