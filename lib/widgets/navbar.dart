@@ -23,7 +23,7 @@ class MyNavBar extends StatelessWidget {
       items: [
         BottomNavigationBarItem(
           icon: IconButton(
-            onPressed: () => goToPage(context, () => HomePage()),
+            onPressed: () => goToPage(context, () => const HomePage()),
             icon: const Icon(Icons.home_outlined),
           ),
           activeIcon: const Icon(Icons.home),
@@ -32,7 +32,6 @@ class MyNavBar extends StatelessWidget {
         BottomNavigationBarItem(
           icon: IconButton(
             onPressed: () => goToPage(context, () => const GamePage(
-              username: "fromNavBar",
               size: 4
             )),
             icon: const Icon(Icons.cake_outlined),

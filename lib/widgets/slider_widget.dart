@@ -138,11 +138,15 @@ class NumberTile extends StatelessWidget {
               ? emptyTileColor
               : filledTileColor,
             ),
-            child: Center(
-              child: Text(
-                display ?? "",
-                style: TextStyle(
-                  fontSize: 180 / scale,
+            child: FittedBox(
+              fit: BoxFit.contain,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(
+                  display ?? "",
+                  style: TextStyle(
+                    fontSize: 180 / scale,
+                  ),
                 ),
               ),
             ),

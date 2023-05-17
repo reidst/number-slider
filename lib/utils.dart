@@ -24,6 +24,17 @@ void returnHome(BuildContext context) {
   Navigator.of(context)
     ..popUntil((route) => route.isFirst)
     ..pushReplacement(MaterialPageRoute(
-      builder:(context) => HomePage()
+      builder:(context) => const HomePage()
   ));
+}
+
+String difficultyLabel(int size) {
+  final String suffix = "$size x $size";
+  if (size < 4) {
+    return "Easy - $suffix";
+  } else if (size > 4) {
+    return "Hard - $suffix";
+  } else {
+    return "Normal - $suffix";
+  }
 }

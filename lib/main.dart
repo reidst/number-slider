@@ -6,6 +6,6 @@ void main() {
     theme: ThemeData(
       colorScheme: const ColorScheme.dark(),
     ),
-    home: HomePage(),
+    home: const HomePage(),
   ));
 }
