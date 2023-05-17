@@ -12,16 +12,12 @@ class GamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Beta")
+        title: Text("Puzzle - ${size}x$size"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Your username: $username"),
-            const SizedBox(height: 20.0),
-            SliderGameWidget(size: size, shuffleStrength: 100),
-          ],
+        child: SliderGameWidget(
+          size: size,
+          shuffleStrength: size * size * 100
         ),
       ),
       bottomNavigationBar: const MyNavBar(highlightedIndex: 1),

@@ -38,8 +38,10 @@ class SliderGame {
   final int size;
   late final List<List<int>> _board;
   late Coord _space;
+  int _playerMoveCount = 0;
 
   Coord get space => _space;
+  int get playerMoveCount => _playerMoveCount;
   int operator [](Coord loc) => _board[loc.row][loc.col];
 
   /// Checks if all pieces are in order.
@@ -52,6 +54,11 @@ class SliderGame {
       }
     }
     return true;
+  }
+
+  /// Checks if the piece at `coord` could be moved into the space.
+  bool isSpaceAdjacent(Coord coord) {
+    return validMoves.contains(coord - _space);
   }
 
   /// Checks if `coord` is within `(0, 0)` and `(size, size)`.
@@ -72,6 +79,7 @@ class SliderGame {
   /// Does nothing if `canMove(delta)` is true.
   void move(Coord delta) {
     if (!canMove(delta)) { return; }
+    else { _playerMoveCount++; }
     final Coord newSpace = _space + delta;
     final tmp = _board[newSpace.row][newSpace.col];
     _board[newSpace.row][newSpace.col] = _board[_space.row][_space.col];
