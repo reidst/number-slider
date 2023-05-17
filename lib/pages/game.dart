@@ -3,9 +3,10 @@ import 'package:flutter_demo/widgets/navbar.dart';
 import 'package:flutter_demo/widgets/slider_widget.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key, required this.username});
+  const GamePage({super.key, required this.username, required this.size});
 
   final String username;
+  final int size;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,7 @@ class GamePage extends StatelessWidget {
           children: [
             Text("Your username: $username"),
             const SizedBox(height: 20.0),
-            const SliderGameWidget(size: 3, shuffleStrength: 100),
+            SliderGameWidget(size: size, shuffleStrength: 100),
           ],
         ),
       ),

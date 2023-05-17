@@ -40,24 +40,7 @@ class SliderGame {
   late Coord _space;
 
   Coord get space => _space;
-  int? operator [](Coord loc) =>
-    inbounds(loc)
-      ? _board[loc.row][loc.col]
-      : null;
-
-  @override
-  String toString() {
-    List<List<String>> strings = List<List<String>>.from(_board.map(
-      (row) => List<String>.from(row.map(
-        (e) => e == size * size - 1
-          ? "(_)"
-          : (e + 1).toString().padLeft(2, '0')
-      ))
-    ));
-    var mid = strings.map((row) => row.join(" | "));
-    var end = mid.join('\n');
-    return end;
-  }
+  int operator [](Coord loc) => _board[loc.row][loc.col];
 
   /// Checks if all pieces are in order.
   bool isSolved() {

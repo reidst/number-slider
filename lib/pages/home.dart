@@ -6,12 +6,15 @@ class HomePage extends StatelessWidget {
 
   final _usernameTextController = TextEditingController();
 
-  void _tryStart(BuildContext context) {
+  void _tryStart(BuildContext context, int size) {
     if (_usernameTextController.text.isNotEmpty) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       Navigator.pushReplacement(
         context, MaterialPageRoute(
-          builder:(context) => GamePage(username: _usernameTextController.text),
+          builder:(context) => GamePage(
+            username: _usernameTextController.text,
+            size: size
+          ),
         )
       );
     } else {
@@ -22,6 +25,17 @@ class HomePage extends StatelessWidget {
         )
       );
     }
+  }
+
+  ButtonStyle _buttonStyle(BuildContext context) {
+    return ButtonStyle(
+      backgroundColor: MaterialStatePropertyAll(
+        Theme.of(context)
+        .buttonTheme
+        .colorScheme
+        ?.background
+      ),
+    );
   }
 
   @override
@@ -45,17 +59,15 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-            TextButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(
-                  Theme.of(context)
-                  .buttonTheme
-                  .colorScheme
-                  ?.background
-                ),
-              ),
-              onPressed: () => _tryStart(context),
-              child: const Text("Start"))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisSize: MainAxisSize.max,
+              children: List.generate(3, (index) => TextButton(
+                style: _buttonStyle(context),
+                onPressed: () => _tryStart(context, index + 3),
+                child: Text("Play ${index + 3} x ${index + 3}"),
+              )),
+            ),
           ],
         ),
       ),
