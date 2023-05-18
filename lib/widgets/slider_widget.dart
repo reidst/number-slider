@@ -20,6 +20,8 @@ class SliderGameWidget extends StatefulWidget {
 class _SliderGameWidgetState extends State<SliderGameWidget> {
   late final SliderGame _game;
   bool _lock = false;
+  Offset? _swipeStartOffset;
+  Offset? _latestSwipeOffset;
 
   @override
   void initState() {
@@ -33,44 +35,49 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
       ? null
       : (_game[Coord(row, col)] + 1).toString();
 
-  void _onVerticalSwipe(DragEndDetails details) {
-    if (_lock) { return; }
-    if (details.primaryVelocity == null) {
-      return;
-    } else {
-      final sign = details.primaryVelocity!.sign.toInt();
-      setState(() {
-        _game.move(Coord(-sign, 0));
-      });
-      if (_game.isSolved()) {
-        _lock = true;
-        (widget.onWinCallback ?? (){})();
-      }
-    }
+  void _onSwipeStart(DragStartDetails details) {
+    _swipeStartOffset = details.localPosition;
   }
 
-  void _onHorizontalSwipe(DragEndDetails details) {
-    if (_lock) { return; }
-    if (details.primaryVelocity == null) {
+  void _onSwipeUpdate(DragUpdateDetails details) {
+    _latestSwipeOffset = details.localPosition;
+  }
+
+  void _onSwipeEnd(DragEndDetails details) {
+    if (_swipeStartOffset == null || _latestSwipeOffset == null) {
+      debugPrint("unexpected PanEnd, data was not collected for PanStart and/or PanUpdate");
       return;
-    } else {
-      final sign = details.primaryVelocity!.sign.toInt();
-      setState(() {
-        _game.move(Coord(0, -sign));
-      });
-      if (_game.isSolved()) {
-        _lock = true;
-        (widget.onWinCallback ?? (){})();
-      }
     }
+    if (_lock) { return; }
+
+    final start = _swipeStartOffset!;
+    final end = _latestSwipeOffset!;
+    final dc = end.dx - start.dx;
+    final dr = end.dy - start.dy;
+    late Coord move;
+    if (dr.abs() > dc.abs()) {
+      move = Coord(-dr.sign.toInt(), 0);
+    } else {
+      move = Coord(0, -dc.sign.toInt());
+    }
+    setState(() => _game.move(move));
+
+    if (_game.isSolved()) {
+      _lock = true;
+      widget.onWinCallback?.call();
+    }
+
+    _swipeStartOffset = null;
+    _latestSwipeOffset = null;
   }
 
   @override
   Widget build(BuildContext context) {
     final isSolved = _game.isSolved();
     return GestureDetector(
-      onVerticalDragEnd: _onVerticalSwipe,
-      onHorizontalDragEnd: _onHorizontalSwipe,
+      onPanStart: _onSwipeStart,
+      onPanUpdate: _onSwipeUpdate,
+      onPanEnd: _onSwipeEnd,
       child: AspectRatio(
         aspectRatio: 11 / 12,
         child: Column(
