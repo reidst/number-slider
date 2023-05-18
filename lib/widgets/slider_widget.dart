@@ -6,10 +6,12 @@ class SliderGameWidget extends StatefulWidget {
   const SliderGameWidget({super.key,
     required this.size,
     required this.dateSeed,
+    this.onWinCallback,
   });
 
   final int size;
   final DateTime dateSeed;
+  final Function()? onWinCallback;
 
   @override
   State<SliderGameWidget> createState() => _SliderGameWidgetState();
@@ -42,6 +44,7 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
       });
       if (_game.isSolved()) {
         _lock = true;
+        (widget.onWinCallback ?? (){})();
       }
     }
   }
@@ -57,6 +60,7 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
       });
       if (_game.isSolved()) {
         _lock = true;
+        (widget.onWinCallback ?? (){})();
       }
     }
   }

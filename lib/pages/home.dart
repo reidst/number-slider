@@ -33,24 +33,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  String _formatDate() {
-    const monthDict = <int, String>{
-      1: "January",
-      2: "February",
-      3: "March",
-      4: "April",
-      5: "May",
-      6: "June",
-      7: "July",
-      8: "August",
-      9: "September",
-      10: "October",
-      11: "November",
-      12: "December",
-    };
-    return "${chosenDate.day} ${monthDict[chosenDate.month] ?? '?'} ${chosenDate.year}";
-  }
-
   Widget _generatePlayButton(BuildContext context, int size) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -60,10 +42,13 @@ class _HomePageState extends State<HomePage> {
             Theme.of(context).colorScheme.onPrimary
           ),
         ),
-        onPressed: () => goToPage(context, () =>
-          GamePage(
-            size: size,
-            date: chosenDate,
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>
+            GamePage(
+              size: size,
+              date: chosenDate,
+            ),
           ),
         ),
         child: Padding(
@@ -80,9 +65,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home")
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +75,7 @@ class _HomePageState extends State<HomePage> {
             ),
             TextButton(
               onPressed: () => _dateDialog(context),
-              child: Text("Puzzles for: ${_formatDate()}")
+              child: Text("Puzzles for: ${formatDate(chosenDate)}")
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

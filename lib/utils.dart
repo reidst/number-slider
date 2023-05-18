@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:number_slider/pages/home.dart';
 
-/// Navigates to the page created by `pageBuilder` without allowing the user to 
-/// go back to the previous page.
-/// 
-/// Example usage:
-/// ```dart
-/// TextButton(
-///   onPressed: () => goToPage(context, () => const NewPage()),
-///   child: const Text("go to new page"),
-/// )
-/// ```
-void goToPage(BuildContext context, Function() pageBuilder) {
-  Navigator.pushReplacement(
-    context,
-    MaterialPageRoute(
-      builder: (context) => pageBuilder(),
-    ),
-  );
-}
-
 void returnHome(BuildContext context) {
   Navigator.of(context)
     ..popUntil((route) => route.isFirst)
@@ -37,4 +18,22 @@ String difficultyLabel(int size) {
   } else {
     return "Normal - $suffix";
   }
+}
+
+String formatDate(DateTime date) {
+  const monthDict = <int, String>{
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December",
+  };
+  return "${date.day} ${monthDict[date.month] ?? '?'} ${date.year}";
 }

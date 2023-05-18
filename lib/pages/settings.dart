@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:number_slider/utils.dart';
 
-// TODO: turn gamma into a settings page, figure out tracking global settings
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
 
@@ -11,18 +9,11 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Settings")
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: () => returnHome(context),
-              child: const Text("Home")
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("To Beta")
-            ),
+            Text("Placeholder for settings"),
           ],
         ),
       ),
