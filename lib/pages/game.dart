@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/utils.dart';
-import 'package:flutter_demo/widgets/navbar.dart';
-import 'package:flutter_demo/widgets/slider_widget.dart';
+import 'package:number_slider/utils.dart';
+import 'package:number_slider/widgets/navbar.dart';
+import 'package:number_slider/widgets/slider_widget.dart';
 
 class GamePage extends StatelessWidget {
   const GamePage({super.key, required this.size, required this.date});

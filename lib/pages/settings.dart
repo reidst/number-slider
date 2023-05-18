@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/utils.dart';
+import 'package:number_slider/utils.dart';
 
 // TODO: turn gamma into a settings page, figure out tracking global settings
 class SettingsPage extends StatelessWidget {

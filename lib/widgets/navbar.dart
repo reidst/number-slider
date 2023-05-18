@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/pages/home.dart';
-import 'package:flutter_demo/pages/game.dart';
-import 'package:flutter_demo/pages/settings.dart';
+import 'package:number_slider/pages/home.dart';
+import 'package:number_slider/pages/settings.dart';
+import 'package:number_slider/utils.dart';
 
 class MyNavBar extends StatelessWidget {
   const MyNavBar({super.key, required this.highlightedIndex});

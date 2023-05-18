@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/pages/home.dart';
+import 'package:number_slider/pages/home.dart';
 
 /// Navigates to the page created by `pageBuilder` without allowing the user to 
 /// go back to the previous page.

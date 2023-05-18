@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_demo/model/slider.dart';
+import 'package:number_slider/model/slider.dart';
 
 void main() {
   test('Coordinates can be added and subtracted', () {

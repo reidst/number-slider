@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/model/slider.dart';
+import 'package:number_slider/model/slider.dart';
 
 const filledTileColor = Color.fromARGB(255, 64, 64, 64);
 const emptyTileColor = Color.fromARGB(255, 32, 32, 32);
