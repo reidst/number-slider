@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/pages/home.dart';
 import 'package:flutter_demo/pages/game.dart';
 import 'package:flutter_demo/pages/settings.dart';
-import 'package:flutter_demo/utils.dart';
 
 class MyNavBar extends StatelessWidget {
   const MyNavBar({super.key, required this.highlightedIndex});
@@ -31,9 +30,7 @@ class MyNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: IconButton(
-            onPressed: () => goToPage(context, () => const GamePage(
-              size: 4
-            )),
+            onPressed: () {},
             icon: const Icon(Icons.cake_outlined),
           ),
           activeIcon: const Icon(Icons.cake),

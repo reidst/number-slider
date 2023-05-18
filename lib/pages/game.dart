@@ -4,8 +4,9 @@ import 'package:flutter_demo/widgets/navbar.dart';
 import 'package:flutter_demo/widgets/slider_widget.dart';
 
 class GamePage extends StatelessWidget {
-  const GamePage({super.key, required this.size});
+  const GamePage({super.key, required this.size, required this.date});
   final int size;
+  final DateTime date;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class GamePage extends StatelessWidget {
       body: Center(
         child: SliderGameWidget(
           size: size,
-          shuffleStrength: size * size * 100
+          dateSeed: date,
         ),
       ),
       bottomNavigationBar: const MyNavBar(highlightedIndex: 1),

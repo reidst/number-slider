@@ -7,11 +7,11 @@ const emptyTileColor = Color.fromARGB(255, 32, 32, 32);
 class SliderGameWidget extends StatefulWidget {
   const SliderGameWidget({super.key,
     required this.size,
-    required this.shuffleStrength,
+    required this.dateSeed,
   });
 
   final int size;
-  final int shuffleStrength;
+  final DateTime dateSeed;
 
   @override
   State<SliderGameWidget> createState() => _SliderGameWidgetState();
@@ -25,7 +25,7 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
   void initState() {
     super.initState();
     _game = SliderGame(size: widget.size);
-    _game.randomMove(widget.shuffleStrength);
+    _game.shuffleByDate(widget.dateSeed);
   }
 
   String? _display(int row, int col) =>

@@ -39,9 +39,11 @@ class SliderGame {
   late final List<List<int>> _board;
   late Coord _space;
   int _playerMoveCount = 0;
+  DateTime? date;
 
   Coord get space => _space;
   int get playerMoveCount => _playerMoveCount;
+  int get shuffleStrength => size * size * 100;
   int operator [](Coord loc) => _board[loc.row][loc.col];
 
   /// Checks if all pieces are in order.
@@ -97,5 +99,16 @@ class SliderGame {
       }
       move(validMoves[choice], ignoreMoveCount: true);
     }
+  }
+
+  /// Shuffles the board using a given year/month/day as a seed. Does nothing if
+  /// the board has already been date-shuffled.
+  void shuffleByDate(DateTime seed) {
+    if (date != null) { return; }
+    date = seed;
+    randomMove(
+      shuffleStrength,
+      DateTime(seed.year, seed.month, seed.day).hashCode,
+    );
   }
 }
