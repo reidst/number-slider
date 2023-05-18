@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:number_slider/pages/game.dart';
+import 'package:number_slider/widgets/title.dart';
 import 'package:number_slider/utils.dart';
 
 class HomePage extends StatefulWidget {
@@ -104,27 +105,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class TitleWidget extends StatelessWidget {
-  const TitleWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("- Number Slider -",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.primary,
-            fontSize: 40,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
     );
   }
 }
