@@ -108,7 +108,22 @@ class SliderGame {
     date = seed;
     randomMove(
       shuffleStrength,
-      DateTime(seed.year, seed.month, seed.day).hashCode,
+      _dateToInt(seed),
     );
   }
+
+  /// Platform-independent conversion from [DateTime] to [int].
+  /// ```dart
+  /// final testDate = DateTime(1996, 4, 20); // 20 April, 1996
+  /// final converted = _dateToInt(testDate);
+  /// print(converted); // 19960420
+  /// ```
+  int _dateToInt(DateTime date) =>
+    int.parse(
+      date.toIso8601String()
+      .split('T')
+      .first
+      .split('-')
+      .join()
+    );
 }
