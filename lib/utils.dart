@@ -37,3 +37,43 @@ String formatDate(DateTime date) {
   };
   return "${date.day} ${monthDict[date.month] ?? '?'} ${date.year}";
 }
+
+Future<T?> showConfirmationDialog<T>({
+  required BuildContext context,
+  required String title,
+  required String body,
+  required String cancelLabel,
+  required String confirmLabel,
+  VoidCallback? cancelAction,
+  VoidCallback? confirmAction,
+}) { return showDialog(
+  context: context,
+  builder: (context) => AlertDialog(
+    title: Text(title),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(body),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            TextButton(
+              onPressed: () {
+                cancelAction?.call();
+                Navigator.of(context).pop();
+              },
+              child: Text(cancelLabel),
+            ),
+            TextButton(
+              onPressed: () {
+                confirmAction?.call();
+                Navigator.of(context).pop();
+              },
+              child: Text(confirmLabel),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ));
+}

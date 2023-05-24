@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:number_slider/model/slider.dart';
+import 'package:number_slider/utils.dart';
 import 'package:number_slider/widgets/number_tile.dart';
 
 class SliderGameWidget extends StatefulWidget {
@@ -74,15 +75,50 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
   @override
   Widget build(BuildContext context) {
     final isSolved = _game.isSolved();
-    return GestureDetector(
-      onPanStart: _onSwipeStart,
-      onPanUpdate: _onSwipeUpdate,
-      onPanEnd: _onSwipeEnd,
-      child: AspectRatio(
-        aspectRatio: 11 / 12,
-        child: Column(
-          children: [
-            Column(
+    return AspectRatio(
+      aspectRatio: 10 / 12,
+      child: Column(
+        children: [
+          Expanded(
+            child: Row(
+              children: [
+                Expanded(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    alignment: Alignment.centerLeft,
+                    child: Text("Moves: ${_game.playerMoveCount}"),
+                  ),
+                ),
+                Expanded(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () => setState(() {
+                        if (!isSolved) _game.undo();
+                      }),
+                      onLongPress: () async {
+                        if (!isSolved) { await showConfirmationDialog(
+                          context: context,
+                          title: "Reset Puzzle",
+                          body: "Are you sure you want to reset the puzzle?",
+                          cancelLabel: "No thanks",
+                          confirmLabel: "Reset",
+                          confirmAction: () => setState(() => _game.reset()),
+                        );}
+                      },
+                      child: const Icon(Icons.replay),
+                    )
+                  ),
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onPanStart: _onSwipeStart,
+            onPanUpdate: _onSwipeUpdate,
+            onPanEnd: _onSwipeEnd,
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: List<Widget>.generate(
                 widget.size,
@@ -99,35 +135,38 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
                 ),
               ),
             ),
-            Expanded(
-              child: Row( // used to be inside FittedBox(cover)
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Expanded(
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      alignment: Alignment.centerLeft,
-                      child: Text("Moves: ${_game.playerMoveCount}"),
-                    ),
-                  ),
-                  Expanded(
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      alignment:Alignment.centerRight,
-                      child: Text(
-                        isSolved ? "You Win!" : " ",
-                        style: TextStyle(
-                          color: Theme.of(context).indicatorColor,
-                        ),
+          ),
+          Expanded(
+            child: Row(
+              children: [
+                const Spacer(),
+                Expanded(
+                  flex: 2,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    alignment:Alignment.center,
+                    child: Text(
+                      isSolved ? "You Win!" : " ",
+                      style: TextStyle(
+                        color: Theme.of(context).indicatorColor,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+                if (isSolved) Expanded(
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: (){},  // TODO: upload score to firebase
+                      child: const Icon(Icons.cloud_upload_outlined),
+                    )
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -16,6 +16,7 @@ class Coord {
 
   Coord operator +(Coord other) => Coord(row + other.row, col + other.col);
   Coord operator -(Coord other) => Coord(row - other.row, col - other.col);
+  Coord operator -() => Coord(-row, -col);
 }
 
 const validMoves = <Coord>[
@@ -33,11 +34,13 @@ class SliderGame {
       )
     );
     _space = Coord(size - 1, size - 1);
+    _undoStack = List.empty(growable: true);
   }
 
   final int size;
   late final List<List<int>> _board;
   late Coord _space;
+  late final List<Coord> _undoStack;
   int _playerMoveCount = 0;
   DateTime? date;
 
@@ -86,7 +89,10 @@ class SliderGame {
     _board[newSpace.row][newSpace.col] = _board[_space.row][_space.col];
     _board[_space.row][_space.col] = tmp;
     _space = newSpace;
-    if (!ignoreMoveCount) { _playerMoveCount++; }
+    if (!ignoreMoveCount) {
+      _playerMoveCount++;
+      _undoStack.add(delta);
+    }
   }
 
   /// Makes one or more random moves on the board.
@@ -99,6 +105,23 @@ class SliderGame {
       }
       move(validMoves[choice], ignoreMoveCount: true);
     }
+  }
+
+  /// Moves opposite the last recorded move and decrements the move counter.
+  void undo() {
+    if (_undoStack.isEmpty) { return; }
+    final lastMove = _undoStack.removeLast();
+    move(-lastMove, ignoreMoveCount: true);
+    _playerMoveCount--;
+  }
+
+  /// Resets the board and move counter by "undoing" all recorded moves.
+  void reset() {
+    for (var m in _undoStack.reversed) {
+      move(-m, ignoreMoveCount: true);
+    }
+    _undoStack.clear();
+    _playerMoveCount = 0;
   }
 
   /// Shuffles the board using a given year/month/day as a seed. Does nothing if

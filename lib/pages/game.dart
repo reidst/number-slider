@@ -17,35 +17,13 @@ class _GamePageState extends State<GamePage> {
   Future<bool> _onWillPop(BuildContext context) async {
     if (canLeaveWithoutConfirm) { return true; }
     bool choice = false;
-    await showDialog(
+    await showConfirmationDialog(
       context: context,
-      builder:(context) =>
-        AlertDialog(
-          title: const Text("Quit Puzzle"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Text(
-                "Are you sure you want to quit? Your progress will be lost."),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("No thanks"),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      choice = true;
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text("Quit"),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
+      title: "Quit Puzzle",
+      body: "Are you sure you want to quit? Your progress will be lost.",
+      cancelLabel: "No thanks",
+      confirmLabel: "Quit",
+      confirmAction: () => choice = true,
     );
     return choice;
   }
