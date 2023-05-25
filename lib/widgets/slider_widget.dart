@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:number_slider/model/slider.dart';
 import 'package:number_slider/utils.dart';
 import 'package:number_slider/widgets/number_tile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SliderGameWidget extends StatefulWidget {
   const SliderGameWidget({super.key,
@@ -70,6 +71,75 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
 
     _swipeStartOffset = null;
     _latestSwipeOffset = null;
+  }
+
+  Future<void> _onUploadScore(BuildContext context) async {
+    final usernameController = TextEditingController();
+    bool didConfirm = false;
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Enter Username:"),
+        content: TextField(
+          controller: usernameController,
+          decoration: const InputDecoration(
+            labelText: "username",
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text("Cancel"),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          TextButton(
+            child: const Text("Submit"),
+            onPressed: () {
+              didConfirm = true;
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
+    if (didConfirm) {
+      final username = usernameController.text.isEmpty
+        ? null
+        : usernameController.text;
+      final db = FirebaseFirestore.instance;
+      final Map<String, dynamic> data = {
+        "username": username,
+        "date": widget.dateSeed.toIso8601String().split('T').first,
+        "version": 1,
+        "difficulty": widget.size,
+        "score": _game.playerMoveCount,
+      };
+      final solves = db.collection("solves");
+      final existsQuery = solves
+        .where("username", isNotEqualTo: null)
+        .where("username", isEqualTo: data["username"])
+        .where("date", isEqualTo: data["date"])
+        .where("version", isEqualTo: data["version"])
+        .where("difficulty", isEqualTo: data["difficulty"]);
+      existsQuery.get().then(
+        (querySnapshot) {
+          if (querySnapshot.docs.isEmpty) {
+            solves.add(data).then((doc) {
+              debugPrint("submitted score, id is ${doc.id}");
+            });
+          } else {
+            final doc = querySnapshot.docs.first;
+            if (doc.data()["score"] > data["score"]) {
+              solves.doc(doc.id).set(data).then((_) {
+                debugPrint("updated score, id was ${doc.id}");
+              });
+            } else {
+              debugPrint("did not beat score in database");
+            }
+          }
+        },
+        onError: (e) => debugPrint("Error querying Firestore: $e"),
+      );
+    }
   }
 
   @override
@@ -158,7 +228,7 @@ class _SliderGameWidgetState extends State<SliderGameWidget> {
                     fit: BoxFit.contain,
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
-                      onTap: (){},  // TODO: upload score to firebase
+                      onTap: () => _onUploadScore(context),
                       child: const Icon(Icons.cloud_upload_outlined),
                     )
                   ),
